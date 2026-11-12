@@ -16,3 +16,9 @@
  .hand-actions{margin-top:9px}
  .privacy{margin-top:7px}
 }
+
+.mini-card.na{background:#f1f1ed;border-color:#b5bab1}
+.mini-card.na .card-label{color:#697367}
+.card-status{font-size:10px;color:#697367}
+.card-status:empty{display:none}
+.na-rule{font-size:12px;line-height:1.7}
