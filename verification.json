@@ -1,0 +1,7 @@
+{
+  "boundaryCases": 481,
+  "exhaustiveCases": 160008,
+  "bpPairs": 60501,
+  "invalidCases": 107,
+  "failures": 0
+}

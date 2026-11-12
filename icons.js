@@ -1,0 +1,1 @@
+window.ItemIcons={"bmi": "assets/bmi.png", "ldl": "assets/ldl.png", "ggt": "assets/ggt.png", "bp": "assets/bp.png", "tg": "assets/tg.png", "uric": "assets/uric.png", "wbc": "assets/wbc.png"};
