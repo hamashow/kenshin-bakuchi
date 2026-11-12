@@ -47,10 +47,10 @@ function scaledValue(raw,scale){
  return {q,value:q/scale};
 }
 function at(q,points){let rank=null;for(const [start,s] of points){if(q<start)break;rank=s;}return rank}
-function calculate(id,raw){const d=getDef(id);if(!d)return {error:'item'};const p=scaledValue(raw,d.scale);if(p.error)return p;const points=d.low&&p.q<d.normal?d.low:d.high;const rank=at(p.q,points);if(rank===null)throw Error('Unmapped input');return {...p,rank,label:labels[rank],grade:labels[rank][0]}}
+function calculate(id,raw){const d=getDef(id);if(!d)return {error:'item'};const p=scaledValue(raw,id==='wbc'?1000:d.scale);if(p.error)return p;if(id==='wbc')p.q/=100;const points=d.low&&p.q<d.normal?d.low:d.high;const rank=at(p.q,points);if(rank===null)throw Error('Unmapped input');return {...p,rank,label:labels[rank],grade:labels[rank][0]}}
 function fiscalYear(date=new Date()){const a=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(date);const n=t=>Number(a.find(x=>x.type===t).value);return n('year')-(n('month')<4?1:0)}
-function intervals(d){const points=[...(d.low||[]),...d.high].sort((a,b)=>a[0]-b[0]);return points.map(([start,rank],i)=>({start,end:points[i+1]?points[i+1][0]-1:null,rank}));}
-function formatNumber(q,d){return (q/d.scale).toFixed(d.scale===10?1:0)}
+function intervals(d){const points=[...(d.low||[]),...d.high].sort((a,b)=>a[0]-b[0]);return points.map(([start,rank],i)=>({start,end:points[i+1]?points[i+1][0]-(d.id==='wbc'?0.01:1):null,rank}));}
+function formatNumber(q,d){return d.id==='wbc'?Number((q/d.scale).toFixed(3)).toString():(q/d.scale).toFixed(d.scale===10?1:0)}
 function rangeText(i,d){if(i.end===null)return formatNumber(i.start,d)+'以上';if(i.start===i.end)return formatNumber(i.start,d);return formatNumber(i.start,d)+'〜'+formatNumber(i.end,d)}
 const api={labels,definitions,sources,calculate,scaledValue,fiscalYear,intervals,formatNumber,rangeText,getDef,meta:{year:2026,checked:'2026-10-31',version:'2026.10.31-16-v1',status:'公式判定境界確認済み／ゲーム細分化は暫定版'}};
 root.Kenshin=api;if(typeof module!=='undefined')module.exports=api;
